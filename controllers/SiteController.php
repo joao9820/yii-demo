@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\Country;
 use app\models\EntryForm;
+use yii\helpers\VarDumper;
 
 class SiteController extends Controller
 {
@@ -129,7 +130,12 @@ class SiteController extends Controller
     }
 
     public function actionSay($message = 'Hello') {
-        var_dump(Country::findAll([]));
+        // Yii::debug(Country::find()->all());
+
+        // VarDumper::dump(Country::find()->all(), 10, true);
+        
+
+        
         return $this->render('say', ['message' => $message]);
     }
 
