@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Country;
 use app\models\EntryForm;
 
 class SiteController extends Controller
@@ -128,6 +129,7 @@ class SiteController extends Controller
     }
 
     public function actionSay($message = 'Hello') {
+        var_dump(Country::findAll([]));
         return $this->render('say', ['message' => $message]);
     }
 
