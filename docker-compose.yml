@@ -1,9 +1,25 @@
 version: '2'
 services:
   php:
-    image: yiisoftware/yii2-php:7.4-apache
+    build:
+      context: .
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
     ports:
       - '8000:80'
+  db:
+    image: postgres:14-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: joao9820
+      POSTGRES_DB: yii2basic
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  pgdata:
+    driver: local
