@@ -1,0 +1,32 @@
+FROM php:7.4-apache
+
+WORKDIR /var/www/html
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
+
+# Adiciona um novo usuário com o mesmo UID e GID do host    
+RUN chown -R www-data:www-data /var/www
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Get latest Composer
+COPY . /var/www/html/
+# CMD ["composer","install"]
+
+RUN chown -R www-data:www-data /var/www/html
+
+USER www-data
+
+EXPOSE 80
+

@@ -9,6 +9,9 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Country;
+use app\models\EntryForm;
+use yii\helpers\VarDumper;
 
 class SiteController extends Controller
 {
@@ -19,7 +22,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout'],
                 'rules' => [
                     [
@@ -30,7 +33,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -127,6 +130,31 @@ class SiteController extends Controller
     }
 
     public function actionSay($message = 'Hello') {
+        // Yii::debug(Country::find()->all());
+
+        // VarDumper::dump(Country::find()->all(), 10, true);
+        
+
+        
         return $this->render('say', ['message' => $message]);
+    }
+
+    public function actionEntry() {
+
+        $model = new EntryForm();
+
+        // Yii:app represents the application instance
+
+        // Useful content aboout the importance of redirection after successful in entry form and to avoid resending the same data
+        // https://en.wikipedia.org/wiki/Post/Redirect/Get
+        if($model->load(Yii::$app->request->post()) && $model->validate()){
+
+
+            return $this->render('entry-confirm', ['model' => $model]);
+
+        }else {
+            return $this->render('entry', ['model' => $model]);
+        }
+
     }
 }
